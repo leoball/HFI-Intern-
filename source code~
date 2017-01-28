@@ -1,0 +1,28 @@
+#!/bin/bash
+#echo "[" >> currency.txt
+while :
+do  
+    sed 's/^]$//g' currency.txt | tr -s '\n' > ans.txt
+    cat ans.txt > currency.txt
+    sed 's/]$/],/g' currency.txt > ans.txt
+    cat ans.txt > currency.txt
+
+ 
+    now=$(date +"%s")
+    let now+=28800
+    let now*=1000
+    wget http://forex.ccb.com/cn/home/news/jshckpj.xml -O ans.txt
+    cat ans.txt | grep FXR | sed 's/<[^>]*>//g' > ans2.txt
+    var1=`awk 'NR==1{print $0}' ans2.txt`
+    echo "[$now,$var1]" >> currency.txt
+    echo "]" >> currency.txt
+    sudo cp currency.txt /Library/WebServer/Documents/currency.html 
+    
+    
+   sleep 120
+
+done
+
+
+
+

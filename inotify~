@@ -1,0 +1,16 @@
+#!/bin/bash
+
+log=/usr/local/inotify/logs/rsync.log
+src="~/Desktop"
+des="~/Desktop"
+host="10.100.48.132" 
+module="publish"       
+username=rsyncname 
+
+
+/usr/local/inotify/bin/inotifywait -mrq --timefmt '%d/%m/%y %H:%M' --format '%T %w %f' -e close_write,delete,create,attrib $src | while read DATE TIME DIR FILE EVENT;do
+
+/usr/bin/rsync -avH --delete --progress --password-file=/etc/passwd.txt $DIR  $username@$host::$module &
+
+done
+/Users/liyang/Downloads/rsync-3.1.2
